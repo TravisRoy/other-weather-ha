@@ -1,5 +1,5 @@
 # Global Rule
-* @alexander0042
+* @TravisRoy
 
 # GitHub Actions/Templates
 /.github/dependabot.yml @cloneofghosts
@@ -7,8 +7,8 @@
 /.github/ISSUE_TEMPLATE/* @cloneofghosts
 
 # HA Specific Workflows
-/.github/workflows/hassfest.yaml @alexander0042
-/.github/workflows/validate.yaml @alexander0042
+/.github/workflows/hassfest.yaml @TravisRoy
+/.github/workflows/validate.yaml @TravisRoy
 
 # Remove CODEOWNER for requirements file
 /requirements.txt
