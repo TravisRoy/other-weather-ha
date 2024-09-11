@@ -10,12 +10,12 @@ updates:
     schedule:
       interval: "daily"
       time: "17:00"
-      timezone: "America/Toronto"
+      timezone: "US/Eastern"
     open-pull-requests-limit: 100
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
       time: "17:10"
-      timezone: "America/Toronto"
+      timezone: "US/Eastern"
     open-pull-requests-limit: 100
