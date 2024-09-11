@@ -17,8 +17,8 @@ jobs:
     steps:
     - uses: actions/stale@v9.0.0
       with:
-        exempt-issue-assignees: 'alexander0042'
-        exempt-pr-assignees: 'alexander0042'
+        exempt-issue-assignees: 'TravisRoy'
+        exempt-pr-assignees: 'TravisRoy'
         exempt-issue-labels: 'keep,Needs Review'
         exempt-pr-labels: 'keep'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
