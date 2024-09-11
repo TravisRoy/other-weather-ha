@@ -1,0 +1,16 @@
+{
+  "domain": "otherweather",
+  "name": "Other Weather",
+  "codeowners": [
+    "@TravisRoy"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/TravisRoy/other-weather-ha",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "hhttps://github.com/TravisRoy/other-weather-ha/issues",
+  "requirements": [
+    "python-forecastio==1.4.0"
+  ],
+  "version": "1.5.8"
+}

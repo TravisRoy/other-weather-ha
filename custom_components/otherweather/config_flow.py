@@ -1,4 +1,4 @@
-"""Config flow for Pirate Weather."""
+"""Config flow for Other Weather."""
 
 import logging
 from datetime import timedelta
@@ -31,21 +31,21 @@ from .const import (
     DEFAULT_UNITS,
     DOMAIN,
     LANGUAGES,
-    PW_PLATFORM,
-    PW_PLATFORMS,
-    PW_PREVPLATFORM,
-    PW_ROUND,
+    OW_PLATFORM,
+    OW_PLATFORMS,
+    OW_PREVPLATFORM,
+    OW_ROUND,
 )
 
-ATTRIBUTION = "Powered by Pirate Weather"
+ATTRIBUTION = "Powered by Other Weather"
 _LOGGER = logging.getLogger(__name__)
 
 CONF_FORECAST = "forecast"
 CONF_HOURLY_FORECAST = "hourly_forecast"
 
 
-class PirateWeatherConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Config flow for PirateWeather."""
+class OtherWeatherConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    """Config flow for OtherWeather."""
 
     VERSION = CONFIG_FLOW_VERSION
 
@@ -53,7 +53,7 @@ class PirateWeatherConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     @callback
     def async_get_options_flow(config_entry):
         """Get the options flow for this handler."""
-        return PirateWeatherOptionsFlow(config_entry)
+        return OtherWeatherOptionsFlow(config_entry)
 
     async def async_step_user(self, user_input=None):
         """Handle a flow initialized by the user."""
@@ -70,8 +70,8 @@ class PirateWeatherConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     CONF_LONGITUDE, default=self.hass.config.longitude
                 ): cv.longitude,
                 vol.Optional(CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL): int,
-                vol.Required(PW_PLATFORM, default=[PW_PLATFORMS[1]]): cv.multi_select(
-                    PW_PLATFORMS
+                vol.Required(OW_PLATFORM, default=[OW_PLATFORMS[1]]): cv.multi_select(
+                    OW_PLATFORMS
                 ),
                 vol.Required(CONF_LANGUAGE, default=DEFAULT_LANGUAGE): vol.In(
                     LANGUAGES
@@ -81,7 +81,7 @@ class PirateWeatherConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Optional(CONF_MONITORED_CONDITIONS, default=[]): cv.multi_select(
                     ALL_CONDITIONS
                 ),
-                vol.Optional(PW_ROUND, default="No"): vol.In(["Yes", "No"]),
+                vol.Optional(OW_ROUND, default="No"): vol.In(["Yes", "No"]),
                 vol.Optional(CONF_UNITS, default=DEFAULT_UNITS): vol.In(
                     ["si", "us", "ca", "uk"]
                 ),
@@ -92,7 +92,7 @@ class PirateWeatherConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             latitude = user_input[CONF_LATITUDE]
             longitude = user_input[CONF_LONGITUDE]
             forecastMode = "daily"
-            forecastPlatform = user_input[PW_PLATFORM]
+            forecastPlatform = user_input[OW_PLATFORM]
             entityNamee = user_input[CONF_NAME]
 
             # Convert scan interval to timedelta
@@ -108,29 +108,29 @@ class PirateWeatherConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 ].total_seconds()
 
             # Unique value includes the location and forcastHours/ forecastDays to seperate WeatherEntity/ Sensor
-            # await self.async_set_unique_id(f"pw-{latitude}-{longitude}-{forecastDays}-{forecastHours}-{forecastMode}-{entityNamee}")
+            # await self.async_set_unique_id(f"ow-{latitude}-{longitude}-{forecastDays}-{forecastHours}-{forecastMode}-{entityNamee}")
             await self.async_set_unique_id(
-                f"pw-{latitude}-{longitude}-{forecastPlatform}-{forecastMode}-{entityNamee}"
+                f"ow-{latitude}-{longitude}-{forecastPlatform}-{forecastMode}-{entityNamee}"
             )
 
             self._abort_if_unique_id_configured()
 
             try:
-                api_status = await _is_pw_api_online(
+                api_status = await _is_ow_api_online(
                     self.hass, user_input[CONF_API_KEY], latitude, longitude
                 )
 
                 if api_status == 403:
                     _LOGGER.warning(
-                        "Pirate Weather Setup Error: Invalid API Key, Ensure that you've subscribed to API at https://pirate-weather.apiable.io/"
+                        "Other Weather Setup Error: Invalid API Key, Ensure that you've subscribed to API at Add API URL"
                     )
                     errors["base"] = (
-                        "Invalid API Key, Ensure that you've subscribed to API at https://pirate-weather.apiable.io/"
+                        "Invalid API Key, Ensure that you've subscribed to API at Add API RUL"
                     )
 
             except HTTPError:
                 _LOGGER.warning(
-                    "Pirate Weather Setup Error: API HTTP Error: %s", api_status
+                    "Other Weather Setup Error: API HTTP Error: %s", api_status
                 )
                 errors["base"] = "API Error: %s", api_status
 
@@ -167,18 +167,18 @@ class PirateWeatherConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             config[CONF_HOURLY_FORECAST] = ""
         if CONF_API_KEY not in config:
             config[CONF_API_KEY] = None
-        if PW_PLATFORM not in config:
-            config[PW_PLATFORM] = None
-        if PW_PREVPLATFORM not in config:
-            config[PW_PREVPLATFORM] = None
-        if PW_ROUND not in config:
-            config[PW_ROUND] = "No"
+        if OW_PLATFORM not in config:
+            config[OW_PLATFORM] = None
+        if OW_PREVPLATFORM not in config:
+            config[OW_PREVPLATFORM] = None
+        if OW_ROUND not in config:
+            config[OW_ROUND] = "No"
         if CONF_SCAN_INTERVAL not in config:
             config[CONF_SCAN_INTERVAL] = DEFAULT_SCAN_INTERVAL
         return await self.async_step_user(config)
 
 
-class PirateWeatherOptionsFlow(config_entries.OptionsFlow):
+class OtherWeatherOptionsFlow(config_entries.OptionsFlow):
     """Handle options."""
 
     def __init__(self, config_entry):
@@ -189,11 +189,11 @@ class PirateWeatherOptionsFlow(config_entries.OptionsFlow):
         """Manage the options."""
         if user_input is not None:
             # if self.config_entry.options:
-            #  user_input[PW_PREVPLATFORM] = self.config_entry.options[PW_PLATFORM]
+            #  user_input[OW_PREVPLATFORM] = self.config_entry.options[OW_PLATFORM]
             # else:
-            # user_input[PW_PREVPLATFORM] = self.hass.data[DOMAIN][entry.entry_id][PW_PLATFORM]
-            # self.hass.data[DOMAIN][entry.entry_id][PW_PREVPLATFORM] = self.hass.data[DOMAIN][entry.entry_id][PW_PLATFORM]
-            # user_input[PW_PREVPLATFORM] = self.hass.data[DOMAIN][entry.entry_id][PW_PLATFORM]
+            # user_input[OW_PREVPLATFORM] = self.hass.data[DOMAIN][entry.entry_id][OW_PLATFORM]
+            # self.hass.data[DOMAIN][entry.entry_id][OW_PREVPLATFORM] = self.hass.data[DOMAIN][entry.entry_id][OW_PLATFORM]
+            # user_input[OW_PREVPLATFORM] = self.hass.data[DOMAIN][entry.entry_id][OW_PLATFORM]
             # _LOGGER.warning('async_step_init_Options')
             return self.async_create_entry(title=user_input[CONF_NAME], data=user_input)
 
@@ -236,12 +236,12 @@ class PirateWeatherOptionsFlow(config_entries.OptionsFlow):
                         ),
                     ): int,
                     vol.Required(
-                        PW_PLATFORM,
+                        OW_PLATFORM,
                         default=self.config_entry.options.get(
-                            PW_PLATFORM,
-                            self.config_entry.data.get(PW_PLATFORM, []),
+                            OW_PLATFORM,
+                            self.config_entry.data.get(OW_PLATFORM, []),
                         ),
-                    ): cv.multi_select(PW_PLATFORMS),
+                    ): cv.multi_select(OW_PLATFORMS),
                     vol.Optional(
                         CONF_LANGUAGE,
                         default=self.config_entry.options.get(
@@ -282,10 +282,10 @@ class PirateWeatherOptionsFlow(config_entries.OptionsFlow):
                         ),
                     ): vol.In(["si", "us", "ca", "uk"]),
                     vol.Optional(
-                        PW_ROUND,
+                        OW_ROUND,
                         default=self.config_entry.options.get(
-                            PW_ROUND,
-                            self.config_entry.data.get(PW_ROUND, "No"),
+                            OW_ROUND,
+                            self.config_entry.data.get(OW_ROUND, "No"),
                         ),
                     ): vol.In(["Yes", "No"]),
                 }
@@ -293,9 +293,9 @@ class PirateWeatherOptionsFlow(config_entries.OptionsFlow):
         )
 
 
-async def _is_pw_api_online(hass, api_key, lat, lon):
+async def _is_ow_api_online(hass, api_key, lat, lon):
     forecastString = (
-        "https://api.pirateweather.net/forecast/"
+        "https://API-ENDPOINT"
         + api_key
         + "/"
         + str(lat)

@@ -1,4 +1,4 @@
-"""Weather data coordinator for the Pirate Weather service."""
+"""Weather data coordinator for the Other Weather service."""
 
 import json
 import logging
@@ -15,18 +15,18 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
-ATTRIBUTION = "Powered by Pirate Weather"
+ATTRIBUTION = "Powered by Other Weather"
 
 
 class WeatherUpdateCoordinator(DataUpdateCoordinator):
     """Weather data update coordinator."""
 
-    def __init__(self, api_key, latitude, longitude, pw_scan_Int, hass):
+    def __init__(self, api_key, latitude, longitude, ow_scan_Int, hass):
         """Initialize coordinator."""
         self._api_key = api_key
         self.latitude = latitude
         self.longitude = longitude
-        self.pw_scan_Int = pw_scan_Int
+        self.ow_scan_Int = ow_scan_Int
         self.requested_units = "si"
 
         self.data = None
@@ -35,20 +35,20 @@ class WeatherUpdateCoordinator(DataUpdateCoordinator):
         self.daily = None
         self._connect_error = False
 
-        super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=pw_scan_Int)
+        super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=ow_scan_Int)
 
     async def _async_update_data(self):
         """Update the data."""
         data = {}
         async with async_timeout.timeout(60):
             try:
-                data = await self._get_pw_weather()
+                data = await self._get_ow_weather()
             except HTTPException as err:
                 raise UpdateFailed(f"Error communicating with API: {err}") from err
         return data
 
-    async def _get_pw_weather(self):
-        """Poll weather data from PW."""
+    async def _get_ow_weather(self):
+        """Poll weather data from OW."""
 
         if self.latitude == 0.0:
             requestLatitude = self.hass.config.latitude
@@ -61,7 +61,7 @@ class WeatherUpdateCoordinator(DataUpdateCoordinator):
             requestLongitude = self.longitude
 
         forecastString = (
-            "https://api.pirateweather.net/forecast/"
+            "https://APIENDPOINT"
             + self._api_key
             + "/"
             + str(requestLatitude)
@@ -82,6 +82,6 @@ class WeatherUpdateCoordinator(DataUpdateCoordinator):
             headers = resp.headers
             status = resp.raise_for_status()
 
-            _LOGGER.debug("Pirate Weather data update")
+            _LOGGER.debug("Other Weather data update")
 
             return Forecast(jsonText, status, headers)

@@ -1,4 +1,4 @@
-"""Support for the Pirate Weather service."""
+"""Support for the Other Weather service."""
 
 from __future__ import annotations
 
@@ -50,24 +50,24 @@ from .const import (
     DOMAIN,
     ENTRY_WEATHER_COORDINATOR,
     FORECAST_MODES,
-    PW_PLATFORM,
-    PW_PLATFORMS,
-    PW_PREVPLATFORM,
-    PW_ROUND,
+    OW_PLATFORM,
+    OW_PLATFORMS,
+    OW_PREVPLATFORM,
+    OW_ROUND,
 )
 from .weather_update_coordinator import WeatherUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
-ATTRIBUTION = "Powered by Pirate Weather"
+ATTRIBUTION = "Powered by Other Weather"
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
         vol.Required(CONF_API_KEY): cv.string,
         vol.Optional(CONF_LATITUDE): cv.latitude,
         vol.Optional(CONF_LONGITUDE): cv.longitude,
-        vol.Optional(PW_PLATFORM): cv.string,
-        vol.Optional(PW_PREVPLATFORM): cv.string,
+        vol.Optional(OW_PLATFORM): cv.string,
+        vol.Optional(OW_PREVPLATFORM): cv.string,
         vol.Optional(CONF_MODE, default="hourly"): vol.In(FORECAST_MODES),
         vol.Optional(CONF_UNITS): vol.In(["auto", "si", "us", "ca", "uk", "uk2"]),
         vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
@@ -94,7 +94,7 @@ MAP_CONDITION = {
 
 CONF_UNITS = "units"
 
-DEFAULT_NAME = "Pirate Weather"
+DEFAULT_NAME = "Other Weather"
 
 
 async def async_setup_platform(
@@ -105,16 +105,16 @@ async def async_setup_platform(
 ) -> None:
     """Import the platform into a config entry."""
     _LOGGER.warning(
-        "Configuration of Pirate Weather (weather entity) in YAML is deprecated "
+        "Configuration of Other Weather (weather entity) in YAML is deprecated "
         "Your existing configuration has been imported into the UI automatically "
         "and can be safely removed from your configuration.yaml file"
     )
 
     # Add source to config
-    config_entry[PW_PLATFORM] = [PW_PLATFORMS[1]]
+    config_entry[OW_PLATFORM] = [OW_PLATFORMS[1]]
 
     # Set as no rounding for compatability
-    config_entry[PW_ROUND] = "No"
+    config_entry[OW_ROUND] = "No"
 
     hass.async_create_task(
         hass.config_entries.flow.async_init(
@@ -167,7 +167,7 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up Pirate Weather entity based on a config entry."""
+    """Set up Other Weather entity based on a config entry."""
     domain_data = hass.data[DOMAIN][config_entry.entry_id]
     name = domain_data[CONF_NAME]
     weather_coordinator = domain_data[ENTRY_WEATHER_COORDINATOR]
@@ -176,18 +176,18 @@ async def async_setup_entry(
     unique_id = f"{config_entry.unique_id}"
 
     # Round Output
-    outputRound = domain_data[PW_ROUND]
+    outputRound = domain_data[OW_ROUND]
 
-    pw_weather = PirateWeather(
+    ow_weather = OtherWeather(
         name, unique_id, forecast_mode, weather_coordinator, outputRound
     )
 
-    async_add_entities([pw_weather], False)
-    # _LOGGER.info(pw_weather.__dict__)
+    async_add_entities([ow_weather], False)
+    # _LOGGER.info(ow_weather.__dict__)
 
 
-class PirateWeather(SingleCoordinatorWeatherEntity[WeatherUpdateCoordinator]):
-    """Implementation of an Pirate Weather sensor."""
+class OtherWeather(SingleCoordinatorWeatherEntity[WeatherUpdateCoordinator]):
+    """Implementation of an Other Weather sensor."""
 
     _attr_attribution = ATTRIBUTION
     _attr_should_poll = False
@@ -233,7 +233,7 @@ class PirateWeather(SingleCoordinatorWeatherEntity[WeatherUpdateCoordinator]):
 
     @property
     def supported_features(self) -> WeatherEntityFeature:
-        """Determine supported features based on available data sets reported by Pirate Weather."""
+        """Determine supported features based on available data sets reported by Other Weather."""
         features = WeatherEntityFeature(0)
 
         features |= WeatherEntityFeature.FORECAST_DAILY
@@ -242,7 +242,7 @@ class PirateWeather(SingleCoordinatorWeatherEntity[WeatherUpdateCoordinator]):
 
     @property
     def available(self):
-        """Return if weather data is available from Pirate Weather."""
+        """Return if weather data is available from Other Weather."""
         return self._weather_coordinator.data is not None
 
     @property
@@ -345,7 +345,7 @@ class PirateWeather(SingleCoordinatorWeatherEntity[WeatherUpdateCoordinator]):
         return [_map_hourly_forecast(f) for f in hourly_forecast]
 
     async def async_update(self) -> None:
-        """Get the latest data from PW and updates the states."""
+        """Get the latest data from OW and updates the states."""
         await self._weather_coordinator.async_request_refresh()
 
     #    async def update(self):

@@ -27,13 +27,13 @@ from homeassistant.const import (
     UnitOfTemperature,
 )
 
-DOMAIN = "pirateweather"
-DEFAULT_NAME = "PirateWeather"
+DOMAIN = "otherweather"
+DEFAULT_NAME = "OtherWeather"
 DEFAULT_LANGUAGE = "en"
 DEFAULT_UNITS = "us"
 DEFAULT_SCAN_INTERVAL = 1200
-ATTRIBUTION = "Data provided by Pirate Weather GUI"
-MANUFACTURER = "PirateWeather"
+ATTRIBUTION = "Data provided by Other Weather"
+MANUFACTURER = "OtherWeather"
 CONF_LANGUAGE = "language"
 CONF_UNITS = "units"
 CONFIG_FLOW_VERSION = 2
@@ -59,10 +59,10 @@ ATTR_API_WEATHER_CODE = "weather_code"
 ATTR_API_FORECAST = "forecast"
 UPDATE_LISTENER = "update_listener"
 PLATFORMS = [Platform.SENSOR, Platform.WEATHER]
-PW_PLATFORMS = ["Sensor", "Weather"]
-PW_PLATFORM = "pw_platform"
-PW_PREVPLATFORM = "pw_prevplatform"
-PW_ROUND = "pw_round"
+OW_PLATFORMS = ["Sensor", "Weather"]
+OW_PLATFORM = "ow_platform"
+OW_PREVPLATFORM = "ow_prevplatform"
+OW_ROUND = "ow_round"
 
 ATTR_FORECAST_CLOUD_COVERAGE = "cloud_coverage"
 ATTR_FORECAST_HUMIDITY = "humidity"
