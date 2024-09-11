@@ -1,5 +1,5 @@
 name: Documentation Issue
-description: Report an issue with the PirateWeather HA documentation.
+description: Report an issue with the OtherWeather HA documentation.
 labels: ["documentation" , "Needs Review"]
 body:
 
@@ -17,7 +17,7 @@ body:
       label: Documentation URL
       description: A link to the section/page where the issue with the documentation is.
       placeholder: |
-        Example: "https://pirateweather.net/en/latest/ha/"
+        Example: "https://Add-Website"
     validations:
       required: true
 
