@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report and issue with the Pirate Weather Home Assistant Integration.
+description: Report and issue with the Other Weather Home Assistant Integration.
 labels: [bug, Needs Review]
 body:
 
@@ -47,7 +47,7 @@ body:
     id: integration-version
     attributes:
       label: Integration version
-      description: You can find this by going to **HACS > Pirate Weather.** The number beside the box is the version of the integration you are running.
+      description: You can find this by going to **HACS > Other Weather.** The number beside the box is the version of the integration you are running.
       placeholder: |
         Example: "1.5.2"
     validations:
@@ -70,9 +70,7 @@ body:
           required: true
         - label: I have updated the Pirate Weather Integration to the latest version.
           required: true
-        - label: I have gone through the [documentation](https://pirateweather.net/en/latest/ha/) before opening this issue.
-          required: true
-        - label: I have searched this repository and [API Repository](https://github.com/alexander0042/pirate-weather-ha) to see if the issue has already been reported.
+        - label: I have gone through the [documentation](https://github.com/TravisRoy/other-weather-ha) before opening this issue.
           required: true
         - label: I have restarted my Home Assistant installation.
           required: true
